@@ -7,9 +7,10 @@ const Cart = () => {
     const dispatch = useDispatch();
 
     let totalPrice = 0;
+    let defaultPrice = 9.99;
 
     for(let i = 0; i < cart.Cart.length; i++) {
-        totalPrice += (cart.Cart[i].price * cart.Cart[i].quantity)
+        totalPrice += (defaultPrice * cart.Cart[i].quantity)
     }
 
     if(cart.value > 0){
@@ -54,21 +55,21 @@ const Cart = () => {
                                 return(
                                     <tr key={item.id}>
                                         <th><button onClick={()=>dispatch(cartActions.DeleteItem(cart, item))} className="badge bg-danger"><i className="fas fa-window-close"></i></button></th>
-                                        <th><img className="img-fluid img-thumbnail" src={item.image} alt={item.Name} width="50px"/></th>
+                                        <th><img className="img-fluid img-thumbnail" src={item.image} alt={item.Name} width="75px"/></th>
                                         <th><span className="badge badge-pill bg-warning">
                                             {item.quantity}
                                         </span></th>
-                                        <th>R$ {item.price.toFixed(2)}</th>
+                                        <th>R$ {defaultPrice.toFixed(2)}</th>
                                         <th><button onClick={()=>dispatch(cartActions.AddItem(cart, item))} className="badge badge-pill bg-primary"><i className="fas fa-plus"></i></button></th>
                                         <th><button onClick={()=>dispatch(cartActions.RemoveItem(cart, item))} className="badge badge-pill bg-danger"><i className="fas fa-minus"></i></button></th>
-                                        <th>R$ {(item.price * item.quantity).toFixed(2)}</th>
+                                        <th>$ {(defaultPrice * item.quantity).toFixed(2)}</th>
                                     </tr>
                                 )
                             })}
                             <tr>
                             <th colSpan="2" scope="col">Total</th>
                             <th colSpan="3">{cart.value} itens</th>
-                            <th colSpan="2">R$ {totalPrice.toFixed(2)}</th>
+                            <th colSpan="2">$ {totalPrice.toFixed(2)}</th>
                             </tr>
                         </tbody>
                         </table>

@@ -6,8 +6,8 @@ import styled from "styled-components";
 
 const Title = styled.div`
   margin-top: 1rem;
-  font-size: 2rem;
-  font-family: "Fjalla One", sans-serif;
+  font-size: 3rem;
+  font-family: 'New Rocker', "Fjalla One", sans-serif;
   color: #ddd;
 `;
 
@@ -21,13 +21,13 @@ const Header = () => {
       xs={12}
     >
       <Title>
-        Dio Shopping
+        The Album Store
       </Title>
       <Link to="/">
-        <Button color="primary">Home</Button>
+        <Button color="secondary">Home</Button>
       </Link>
       <Link to="/contato">
-        <Button color="primary">Contato</Button>
+        <Button color="secondary">Writing Wall</Button>
       </Link>
       <Cart />
     </Grid>

@@ -18,6 +18,10 @@ const CreateStyle = createGlobalStyle`
         background-size: 700px;
     }
 
+    a {
+        text-decoration: none;
+    }
+
 `;
 
 export default CreateStyle;

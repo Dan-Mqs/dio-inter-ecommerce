@@ -27,12 +27,16 @@ const HomePage = () => {
             return container;
         }
     )
+    console.log(categorys)
 
     const category = categorys.map(JSON.stringify)
                     .filter(function(item, index, arr){
                         return arr.indexOf(item, index + 1) === -1;
                     })
                     .map(JSON.parse)
+
+
+    
 
     const arrayCategory = categorys.map(category => category.name)
     let count = { };
@@ -49,7 +53,7 @@ const HomePage = () => {
             <Grid item xs={3}>
                 <Paper className={classes.paper}>
                     <Typography variant='h5'>
-                        Categorias
+                        Genres
                     </Typography>
                     <List>
                         {category.map(
