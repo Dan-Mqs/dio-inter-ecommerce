@@ -11,8 +11,13 @@ const useStyles = makeStyles((theme) => ({
     },
     paper: {
       padding: theme.spacing(2),
-      textAlign: 'center'
+      textAlign: 'center',
+      color: "#ddd",
+      background: "#202020"
     },
+    item: {
+        color: "#ddd",
+    }
   }));
 
 const HomePage = () => {
@@ -27,7 +32,6 @@ const HomePage = () => {
             return container;
         }
     )
-    console.log(categorys)
 
     const category = categorys.map(JSON.stringify)
                     .filter(function(item, index, arr){
@@ -50,7 +54,7 @@ const HomePage = () => {
 
     return(
         <Grid container spacing={3} className={classes.root}>
-            <Grid item xs={3}>
+            <Grid item xs={2}>
                 <Paper className={classes.paper}>
                     <Typography variant='h5'>
                         Genres
@@ -60,6 +64,7 @@ const HomePage = () => {
                             category => {
                                 return (
                                     <Item
+                                        className= {classes.item}
                                         key = {category.id} 
                                         name= {category.name}
                                         details={count[category.name]}
@@ -70,7 +75,7 @@ const HomePage = () => {
                     </List>
                 </Paper>
             </Grid>
-            <Grid container xs={9} spacing={3} className={classes.root}>
+            <Grid container xs={10} spacing={3} className={classes.root}>
                 {products.map(item => {
                     return(
                         <Card

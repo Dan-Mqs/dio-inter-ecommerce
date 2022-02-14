@@ -1,8 +1,8 @@
+import { Button, Grid } from "@material-ui/core/";
 import React from "react";
 import { Link } from "react-router-dom";
-import { Grid, Typography, Button } from "@material-ui/core/";
-import Cart from "./Cart";
 import styled from "styled-components";
+import Cart from "./Cart";
 
 const Title = styled.div`
   margin-top: 1rem;
@@ -24,10 +24,10 @@ const Header = () => {
         The Album Store
       </Title>
       <Link to="/">
-        <Button color="secondary">Home</Button>
+        <Button variant="outlined" size="large" color="secondary">Store</Button>
       </Link>
-      <Link to="/contato">
-        <Button color="secondary">Writing Wall</Button>
+      <Link to="/wall">
+        <Button size="large" color="secondary">Writing Wall</Button>
       </Link>
       <Cart />
     </Grid>

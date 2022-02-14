@@ -13,7 +13,18 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     padding: theme.spacing(2),
     textAlign: "center",
+    color: "#ddd",
+    background: "#202020"
   },
+  button: {
+    color: "#ddd",
+    background: "#303030",
+    marginTop: ".75rem"
+  },
+  image: {
+    borderRadius: "5px",
+    marginBottom: ".75rem"
+  }
 }));
 
 const Card = ({ product, children }) => {
@@ -23,15 +34,16 @@ const Card = ({ product, children }) => {
 
   return (
     <Grid item xs={3}>
-      <Paper className={classes.paper}>
+      <Paper className={classes.paper} elevation={2}>
         <Grid container direction="column">
           <Grid item>
-            <img width="140px" src={product.image} alt={product.name_product} style={{borderRadius: 5 + 'px'}}/>
+            <img width="140px" src={product.image} alt={product.name_product} className={classes.image}/>
             <Typography variant="h6">{children}</Typography>
             <Typography variant="subtitle1">{product.artist}</Typography>
           </Grid>
 
           <Button
+            className={classes.button}
             variant="contained"
             onClick={() => dispatch(cartActions.Add(cart, product))}
           >
