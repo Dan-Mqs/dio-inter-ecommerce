@@ -1,94 +1,156 @@
-import { useState, useEffect } from 'react';
-import { Grid, Button, TextField } from '@material-ui/core/';
+import { useState, useEffect } from "react";
+import {
+  Grid,
+  Button,
+  TextField,
+  Typography,
+  makeStyles,
+} from "@material-ui/core/";
+
+const useStyles = makeStyles((theme) => ({
+  h5: {
+    color: "#ccc",
+  },
+  textField: {
+    color: "#ddd",
+  },
+  underline: {
+    borderBottom: "2px solid #ddd",
+  },
+}));
 
 const Contatos = () => {
+  const url = "http://localhost:5000/message";
+  const [message, setMessage] = useState([]);
+  const [author, setAuthor] = useState("");
+  const [content, setContent] = useState("");
+  const [validator, setValidator] = useState(false);
+  const [render, setRender] = useState(false);
+  const [success, setSuccess] = useState(false);
 
-    const url = 'http://localhost:5000/message'
-    const [message, setMessage] = useState([]);
-    const [author, setAuthor] = useState('');
-    const [content, setContent] = useState('');
-    const [validator, setValidator] = useState(false);
-    const [render, setRender] = useState(false);
-    const [success, setSuccess] = useState(false);
+  useEffect(async () => {
+    const response = await fetch(url);
+    const data = await response.json();
+    setMessage(data);
+  }, [render]);
 
-    useEffect(async () => {
-        const response = await fetch(url)
-        const data = await response.json();
-        setMessage(data);
-    }, [render])
+  const classes = useStyles();
 
-    const sendMessage = () => {
-        setValidator(false);
-        if(author.length <= 0 || content.length <= 0){
-            return setValidator(!validator)
+  const sendMessage = () => {
+    setValidator(false);
+    if (author.length <= 0 || content.length <= 0) {
+      return setValidator(!validator);
+    }
+    const bodyForm = {
+      email: author,
+      message: content,
+    };
+
+    fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(bodyForm),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.id) {
+          setRender(!render);
+          setSuccess(true);
+          setTimeout(() => {
+            setSuccess(false);
+          }, 5000);
         }
-        const bodyForm = {
-            email: author,
-            message: content,
-        }
+      });
 
-        fetch(url, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(bodyForm)
-        })
-        .then((response) => response.json())
-        .then((data) => {
-            if(data.id) {
-                setRender(!render);
-                setSuccess(true);
-                setTimeout(() => {
-                    setSuccess(false);
-                }, 5000)
-            }
-        })
-        
-        setAuthor('');
-        setContent('');
-        
-        console.log(content)
-    }  
+    setAuthor("");
+    setContent("");
+  };
 
-    return(
-        <>
-            <Grid container direction="row" xs={12}>
-                <h2>Talk to Dio</h2>
-                <TextField id="name" label="Name" value={author} onChange={(event)=>{setAuthor(event.target.value)}} fullWidth/>
-                <TextField id="message" label="Message" value={content} onChange={(event)=>{setContent(event.target.value)}} fullWidth/>
-            </Grid>
+  return (
+    <>
+      <Grid container direction="row" xs={12}>
+        <Typography variant="h5" className={classes.h5}>
+          Write your message on the wall!
+        </Typography>
 
-            {validator && 
-                <div className="alert alert-warning alert-dismissible fade show mt-2" role="alert">
-                    <strong>Por favor, preencha todos os campos!</strong>
-                    <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            }
+        <TextField
+          id="name"
+          label="Name"
+          color="secondary"
+          variant="filled"
+          value={author}
+          InputLabelProps={{ className: classes.textField }}
+          inputProps={{ className: classes.textField }}
+          onChange={(event) => {
+            setAuthor(event.target.value);
+          }}
+          fullWidth
+        />
+        <TextField
+          id="message"
+          label="Message"
+          color="secondary"
+          variant="filled"
+          value={content}
+          InputLabelProps={{ className: classes.textField }}
+          inputProps={{ className: classes.textField }}
+          onChange={(event) => {
+            setContent(event.target.value);
+          }}
+          fullWidth
+        />
+      </Grid>
 
-            {success && 
-                <div className="alert alert-success alert-dismissible fade show mt-2" role="alert">
-                    <strong>Mensagem enviada com sucesso. :)</strong>
-                </div>
-            }
+      {validator && (
+        <div
+          className="alert alert-warning alert-dismissible fade show mt-2"
+          role="alert"
+        >
+          <strong>Please, fill in all fields!</strong>
+          <button
+            type="button"
+            className="btn-close"
+            data-bs-dismiss="alert"
+            aria-label="Close"
+          ></button>
+        </div>
+      )}
 
-            <Button onClick={sendMessage} className="mt-2" variant="contained" color="primary">
-                Send
-            </Button>
+      {success && (
+        <div
+          className="alert alert-success alert-dismissible fade show mt-2"
+          role="alert"
+        >
+          <strong>Your message has been written. :)</strong>
+        </div>
+      )}
 
-            {message.map((content) => {
-                return(
-                    <div className="card mt-2" key={content.id}>
-                        <div className="card-body">
-                            <h5 className="card-title">{content.email}</h5>
-                            <p className="card-text">{content.message}</p>
-                            <p className="card-text"><small className="text-muted">{content.created_at}</small></p>
-                        </div>
-                    </div>
-                )
-            } )}
-        </>
-    )
-}
+      <Button
+        onClick={sendMessage}
+        className="mt-2"
+        variant="contained"
+        color="secondary"
+      >
+        Send
+      </Button>
+
+      {message.map((content) => {
+        return (
+          <div className="card mt-2 text-white bg-dark" key={content.id}>
+            <div className="card-body">
+              <h5 className="card-title">{content.email}</h5>
+              <p className="card-text">{content.message}</p>
+              <p className="card-text">
+                <small className="text-muted">{content.created_at}</small>
+              </p>
+            </div>
+          </div>
+        );
+      })}
+    </>
+  );
+};
 
 export default Contatos;
